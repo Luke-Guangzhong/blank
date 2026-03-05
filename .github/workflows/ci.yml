@@ -83,6 +83,13 @@ jobs:
         run: |
           brew install cmake automake autoconf libtool
 
+      - name: Setup autotools symlinks
+        run: |
+          # macOS uses glibtoolize instead of libtoolize
+          mkdir -p ~/bin
+          ln -s "$(which glibtoolize)" ~/bin/libtoolize
+          echo "$HOME/bin" >> $GITHUB_PATH
+
       - name: Configure CMake (${{ matrix.build_type }})
         run: |
           cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
