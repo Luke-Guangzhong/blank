@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE log4c SYSTEM "">
 <log4c version="1.2.4">
-  <appender name="stdout" type="stream" layout="basic">
+  <appender name="stdout" type="stream" layout="dated">
     <param name="stream" value="stdout"/>
   </appender>
   <appender name="stderr" type="stream" layout="dated">
