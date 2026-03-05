@@ -81,7 +81,7 @@ jobs:
 
       - name: Install build dependencies
         run: |
-          brew install cmake
+          brew install cmake automake autoconf libtool
 
       - name: Configure CMake (${{ matrix.build_type }})
         run: |
