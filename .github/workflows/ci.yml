@@ -1,0 +1,98 @@
+name: CI
+
+on:
+  push:
+    branches: [master, main, develop]
+  pull_request:
+    branches: [master, main, develop]
+
+jobs:
+  # 格式检查任务
+  format-check:
+    name: Format Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install clang-format
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang-format
+
+      - name: Install cmake-format
+        run: |
+          pip install cmake-format
+
+      - name: Check C/C++ code format with clang-format
+        run: |
+          echo "Checking C/C++ files format..."
+          find src include -type f \( -name "*.c" -o -name "*.h" \) -exec clang-format --dry-run --Werror {} +
+        shell: bash
+
+      - name: Check CMake files format with cmake-format
+        run: |
+          echo "Checking CMake files format..."
+          cmake-format --check CMakeLists.txt cmake/*.cmake
+        shell: bash
+
+  # Linux 构建任务
+  build-linux:
+    name: Build Linux (Release & Debug)
+    needs: format-check
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        build_type: [Release, Debug]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential cmake
+
+      - name: Configure CMake (${{ matrix.build_type }})
+        run: |
+          cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
+                -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
+                -S . -B build
+
+      - name: Build
+        run: |
+          cmake --build build --config ${{ matrix.build_type }}
+
+      - name: Run executable
+        run: |
+          ./build/output/bin/myapp
+
+  # macOS 构建任务
+  build-macos:
+    name: Build macOS (Release & Debug)
+    needs: format-check
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        build_type: [Release, Debug]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: |
+          brew install cmake
+
+      - name: Configure CMake (${{ matrix.build_type }})
+        run: |
+          cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
+                -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
+                -S . -B build
+
+      - name: Build
+        run: |
+          cmake --build build --config ${{ matrix.build_type }}
+
+      - name: Run executable
+        run: |
+          ./build/output/bin/myapp
