@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4c SYSTEM "">
+<log4c version="1.2.4">
+  <appender name="stdout" type="stream" layout="basic">
+    <param name="stream" value="stdout"/>
+  </appender>
+  <appender name="stderr" type="stream" layout="dated">
+    <param name="stream" value="stderr"/>
+  </appender>
+  <category name="root" priority="notice" appender="stdout"/>
+  <category name="main" priority="debug"/>
+  <category name="network" priority="debug"/>
+  <category name="database" priority="debug"/>
+  <category name="ui" priority="debug"/>
+</log4c>

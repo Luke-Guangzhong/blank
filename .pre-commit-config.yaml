@@ -1,0 +1,23 @@
+# Pre-commit hooks configuration
+# Run `pre-commit install` after cloning this repository to enable these hooks
+
+repos:
+  # Check git author email
+  - repo: local
+    hooks:
+      - id: check-author-email
+        name: Check git author email
+        entry: >-
+          bash -c
+          'ALLOWED_EMAILS=("luke_guangzhong@petalmail.com" "luke_guangzhong@qq.com" "luke.guangzhong@gmail.com");
+          AUTHOR_EMAIL=$(git config user.email);
+          if [[ ! " ${ALLOWED_EMAILS[@]} " =~ " ${AUTHOR_EMAIL} " ]];
+          then echo "Error: Email ${AUTHOR_EMAIL} not in allowed list";
+          echo "Allowed emails:";
+          printf "  - %s\n" "${ALLOWED_EMAILS[@]}";
+          echo "";
+          echo "Fix with: git config user.email your-email@example.com";
+          exit 1;
+          fi'
+        language: system
+        pass_filenames: false

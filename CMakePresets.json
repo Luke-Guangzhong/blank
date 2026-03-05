@@ -1,0 +1,67 @@
+{
+    "version": 3,
+    "configurePresets": [
+        {
+            "name": "linux",
+            "displayName": "Default Config for Linux",
+            "generator": "Unix Makefiles",
+            "binaryDir": "${sourceDir}/build",
+            "cacheVariables": {
+                "CMAKE_EXPORT_COMPILE_COMMANDS": {
+                    "type": "BOOL",
+                    "value": "ON"
+                },
+                "ENABLE_COVERAGE_TEST": {
+                    "type": "BOOL",
+                    "value": "OFF"
+                }
+            }
+        },
+        {
+            "name": "coverage-gcc",
+            "displayName": "Coverage (GCC compatible)",
+            "inherits": "linux",
+            "cacheVariables": {
+                "ENABLE_COVERAGE_TEST": {
+                    "type": "BOOL",
+                    "value": "ON"
+                },
+                "ENABLE_LLVM_COVERAGE": {
+                    "type": "BOOL",
+                    "value": "OFF"
+                }
+            }
+        },
+        {
+            "name": "macOS",
+            "displayName": "Default Config for macOS",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build",
+            "cacheVariables": {
+                "CMAKE_EXPORT_COMPILE_COMMANDS": {
+                    "type": "BOOL",
+                    "value": "ON"
+                },
+                "ENABLE_COVERAGE_TEST": {
+                    "type": "BOOL",
+                    "value": "OFF"
+                }
+            }
+        },
+        {
+            "name": "coverage-llvm",
+            "displayName": "Coverage (LLVM native)",
+            "inherits": "macOS",
+            "cacheVariables": {
+                "ENABLE_COVERAGE_TEST": {
+                    "type": "BOOL",
+                    "value": "ON"
+                },
+                "ENABLE_LLVM_COVERAGE": {
+                    "type": "BOOL",
+                    "value": "ON"
+                }
+            }
+        }
+    ]
+}
