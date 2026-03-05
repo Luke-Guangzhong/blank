@@ -78,16 +78,8 @@ add_executable(${PROJECT_NAME})
 target_sources(${PROJECT_NAME} PRIVATE src/main.c src/log.c)
 target_include_directories(${PROJECT_NAME} PUBLIC include ${CMAKE_CURRENT_BINARY_DIR}/include)
 target_link_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_BINARY_DIR}/lib)
-target_link_libraries(
-    ${PROJECT_NAME}
-    libtrower-base64
-    libcJSON
-    liblog4c)
-add_dependencies(
-    ${PROJECT_NAME}
-    libtrower-base64
-    libcJSON
-    liblog4c)
+target_link_libraries(${PROJECT_NAME} libtrower-base64 libcJSON liblog4c)
+add_dependencies(${PROJECT_NAME} libtrower-base64 libcJSON liblog4c)
 target_compile_definitions(${PROJECT_NAME} PRIVATE LOG4C_RCPATH="${CMAKE_CURRENT_SOURCE_DIR}/resource")
 
 if(ENABLE_COVERAGE_TEST)
